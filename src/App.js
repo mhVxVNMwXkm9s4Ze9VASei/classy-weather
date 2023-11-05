@@ -1,46 +1,36 @@
 import React from "react";
 
-class Counter extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      count: 1,
-    };
+    this.state = { location: "" };
 
-    this.handleDecrement = this.handleDecrement.bind(this);
-    this.handleIncrement = this.handleIncrement.bind(this);
+    this.fetchWeather = this.fetchWeather.bind(this);
   }
 
-  handleDecrement() {
-    this.setState((prevState) => ({
-      ...prevState,
-      count: prevState.count - 1,
-    }));
-  }
-
-  handleIncrement() {
-    this.setState((prevState) => ({
-      ...prevState,
-      count: prevState.count + 1,
-    }));
-  }
+  fetchWeather() {}
 
   render() {
-    const { count } = this.state;
-    const date = new Date();
-    date.setDate(date.getDate() + count);
+    const { location } = this.state;
 
     return (
-      <div>
-        <button onClick={this.handleDecrement}>-</button>
-        <span>
-          {date.toDateString()} [{count}]
-        </span>
-        <button onClick={this.handleIncrement}>+</button>
+      <div className="app">
+        <h1>Classy Weather</h1>
+        <div>
+          <input
+            type="text"
+            placeholder="Search for location..."
+            value={location}
+            onChange={(event) =>
+              this.setState({ location: event.target.value })
+            }
+          />
+        </div>
+        <button onClick={this.fetchWeather}>Get weather</button>
       </div>
     );
   }
 }
 
-export default Counter;
+export default App;
