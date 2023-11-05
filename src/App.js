@@ -7,16 +7,37 @@ class Counter extends React.Component {
     this.state = {
       count: 1,
     };
+
+    this.handleDecrement = this.handleDecrement.bind(this);
+    this.handleIncrement = this.handleIncrement.bind(this);
+  }
+
+  handleDecrement() {
+    this.setState((prevState) => ({
+      ...prevState,
+      count: prevState.count - 1,
+    }));
+  }
+
+  handleIncrement() {
+    this.setState((prevState) => ({
+      ...prevState,
+      count: prevState.count + 1,
+    }));
   }
 
   render() {
     const { count } = this.state;
+    const date = new Date();
+    date.setDate(date.getDate() + count);
 
     return (
       <div>
-        <button>-</button>
-        <span>{count}</span>
-        <button>+</button>
+        <button onClick={this.handleDecrement}>-</button>
+        <span>
+          {date.toDateString()} [{count}]
+        </span>
+        <button onClick={this.handleIncrement}>+</button>
       </div>
     );
   }
