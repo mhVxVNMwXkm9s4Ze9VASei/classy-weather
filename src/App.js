@@ -47,6 +47,8 @@ class App extends React.Component {
   fetchWeather = async () => {
     const { location } = this.state;
 
+    if (location.length < 2) return this.setState({ weather: {} });
+
     try {
       this.setState({ isLoading: true });
       // 1) Getting location (geocoding)
@@ -78,6 +80,20 @@ class App extends React.Component {
 
   setLocation = (event) => this.setState({ location: event.target.value });
 
+  componentDidMount() {
+    this.setState({ location: localStorage.getItem("location") || "" });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { location } = this.state;
+
+    if (location !== prevState.location) {
+      this.fetchWeather();
+
+      localStorage.setItem("location", location);
+    }
+  }
+
   render() {
     const { displayLocation, isLoading, location, weather } = this.state;
 
@@ -88,7 +104,6 @@ class App extends React.Component {
           location={location}
           onChangeLocation={this.setLocation}
         />
-        <button onClick={this.fetchWeather}>Get weather</button>
         {isLoading && <p className="loader">Loading...</p>}
         {weather.weathercode && (
           <Weather
@@ -121,6 +136,10 @@ class Input extends React.Component {
 }
 
 class Weather extends React.Component {
+  componentWillUnmount() {
+    console.log("Weather will unmount.");
+  }
+
   render() {
     const { location } = this.props;
     const {
